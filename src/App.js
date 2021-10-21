@@ -1,11 +1,14 @@
 import Home from './pages/Home';
+import Bottom from './pages/Bottom';
+import './app.scss';
 
 const App = () => {
 
 
   return (
-    <div>
+    <div className="fillWindow">
       <Home />
+      <Bottom />
     </div>
   );
 }

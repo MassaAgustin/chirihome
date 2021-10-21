@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import { useState } from 'react'
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import MicIcon from '@mui/icons-material/Mic';
@@ -18,7 +18,6 @@ const Home = () => {
         } catch (error) {
             setRecording(false);
         }
-
     }
 
     reconocimiento.onresult = (event) => {
@@ -40,7 +39,7 @@ const Home = () => {
     }
 
     return (
-        <Fragment>
+        <div className="bodySection">
             <h4> {textHelp} </h4>
             <LoadingButton
                 color="secondary"
@@ -50,7 +49,7 @@ const Home = () => {
                 startIcon={<MicIcon />}
                 variant="contained"
             > Grabar </LoadingButton>
-        </Fragment>
+        </div>
 
     )
 }
