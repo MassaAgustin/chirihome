@@ -1,23 +1,36 @@
 import { useState, Fragment } from 'react'
 
+import LoadingButton from '@mui/lab/LoadingButton';
+import MicIcon from '@mui/icons-material/Mic';
+
 const Home = () => {
 
-    const [textHelp, setTextHelp] = useState('');
-    const [isRecording, setRecording] = useState('');
+    const [textHelp, setTextHelp] = useState('Que deseas ?');
+    const [isRecording, setRecording] = useState(false);
 
     const reconocimientoVoz = window.SpeechRecognition || window.webkitSpeechRecognition;
     const reconocimiento = new reconocimientoVoz();
 
-    reconocimiento.onstart = () => {
-        isRecording(true);
-        setTextHelp('Estamos grabando la voz...');
+    reconocimiento.onstart = (event) => {
+        try {
+            setRecording(true);
+            setTextHelp('Estamos grabando la voz...');
+        } catch (error) {
+            setRecording(false);
+        }
+
     }
+
     reconocimiento.onresult = (event) => {
 
-        const mensaje = event.results[0][0].transcript;
-        isRecording(false);
-        setTextHelp(mensaje);
-        leerTextoSimple(mensaje);
+        try {
+            const mensaje = event.results[0][0].transcript;
+            setRecording(false);
+            setTextHelp(mensaje);
+            leerTextoSimple(mensaje);
+        } catch {
+            setRecording(false);
+        }
     }
 
     const leerTextoSimple = (mensaje) => {
@@ -28,10 +41,15 @@ const Home = () => {
 
     return (
         <Fragment>
-            <p> {textHelp} </p>
-            <button onClick={() => reconocimiento.start()} >
-                Grabar
-            </button>
+            <h4> {textHelp} </h4>
+            <LoadingButton
+                color="secondary"
+                onClick={(e) => reconocimiento.start(e)}
+                loading={isRecording}
+                loadingPosition="start"
+                startIcon={<MicIcon />}
+                variant="contained"
+            > Grabar </LoadingButton>
         </Fragment>
 
     )
